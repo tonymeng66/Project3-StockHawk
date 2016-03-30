@@ -2,11 +2,17 @@ package com.sam_chordas.android.stockhawk.service;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
+import android.os.Handler;
+import android.os.Looper;
+
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -48,7 +54,7 @@ public class StockTaskService extends GcmTaskService{
   }
 
   @Override
-  public int onRunTask(TaskParams params){
+  public int onRunTask(TaskParams params) throws NumberFormatException{
     Cursor initQueryCursor;
     if (mContext == null){
       mContext = this;
@@ -118,14 +124,16 @@ public class StockTaskService extends GcmTaskService{
           ContentValues contentValues = new ContentValues();
           // update ISCURRENT to 0 (false) so new data is current
           if (isUpdate){
-            contentValues.put(QuoteColumns.ISCURRENT, 0);
+              contentValues.put(QuoteColumns.ISCURRENT, 0);
             mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                 null, null);
           }
           mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
               Utils.quoteJsonToContentVals(getResponse));
         }catch (RemoteException | OperationApplicationException e){
-          Log.e(LOG_TAG, "Error applying batch insert", e);
+            Log.e(LOG_TAG, "Error applying batch insert", e);
+        }catch(NumberFormatException n){
+            throw n;
         }
       } catch (IOException e){
         e.printStackTrace();

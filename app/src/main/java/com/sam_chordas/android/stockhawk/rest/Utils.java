@@ -2,8 +2,12 @@ package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
+
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +22,7 @@ public class Utils {
 
   public static boolean showPercent = true;
 
-  public static ArrayList quoteJsonToContentVals(String JSON){
+  public static ArrayList quoteJsonToContentVals(String JSON)throws NumberFormatException{
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
     JSONObject jsonObject = null;
     JSONArray resultsArray = null;
@@ -44,17 +48,19 @@ public class Utils {
         }
       }
     } catch (JSONException e){
-      Log.e(LOG_TAG, "String to JSON failed: " + e);
+        Log.e(LOG_TAG, "String to JSON failed: " + e);
+    }catch (NumberFormatException n){
+        throw n;
     }
     return batchOperations;
   }
 
-  public static String truncateBidPrice(String bidPrice){
+  public static String truncateBidPrice(String bidPrice)throws NumberFormatException{
     bidPrice = String.format("%.2f", Float.parseFloat(bidPrice));
     return bidPrice;
   }
 
-  public static String truncateChange(String change, boolean isPercentChange){
+  public static String truncateChange(String change, boolean isPercentChange)throws NumberFormatException{
     String weight = change.substring(0,1);
     String ampersand = "";
     if (isPercentChange){
@@ -71,21 +77,29 @@ public class Utils {
     return change;
   }
 
-  public static ContentProviderOperation buildBatchOperation(JSONObject jsonObject){
+  public static ContentProviderOperation buildBatchOperation(JSONObject jsonObject)throws NumberFormatException{
     ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
         QuoteProvider.Quotes.CONTENT_URI);
     try {
       String change = jsonObject.getString("Change");
-      builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
-      builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
-      builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
-          jsonObject.getString("ChangeinPercent"), true));
-      builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
-      builder.withValue(QuoteColumns.ISCURRENT, 1);
-      if (change.charAt(0) == '-'){
+      String symbol = jsonObject.getString("symbol");
+      String bid = jsonObject.getString("Bid");
+      String changeInPercent = jsonObject.getString("ChangeinPercent");
+
+      try {
+        builder.withValue(QuoteColumns.SYMBOL, symbol);
+        builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(bid));
+        builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
+                changeInPercent, true));
+        builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
+        builder.withValue(QuoteColumns.ISCURRENT, 1);
+      }catch(NumberFormatException e){
+        throw e;
+      }
+      if (change.charAt(0) == '-') {
         builder.withValue(QuoteColumns.ISUP, 0);
-      }else{
-        builder.withValue(QuoteColumns.ISUP, 1);
+      } else {
+          builder.withValue(QuoteColumns.ISUP, 1);
       }
 
     } catch (JSONException e){
