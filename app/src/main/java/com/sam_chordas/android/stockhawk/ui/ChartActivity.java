@@ -13,6 +13,6 @@ public class ChartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.charts);
 
-        (new LineCardOne((CardView) findViewById(R.id.card1), getApplicationContext())).init();
+        (new LineCardThree((CardView) findViewById(R.id.card2), getApplicationContext())).init();
     }
 }
