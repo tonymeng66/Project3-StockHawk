@@ -4,6 +4,7 @@ import android.content.ContentProviderOperation;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sam_chordas.android.stockhawk.data.GraphColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
@@ -55,6 +56,37 @@ public class Utils {
     return batchOperations;
   }
 
+  public static ArrayList graphQuoteJsonToContentVals(String JSON)throws NumberFormatException{
+      ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
+      JSONObject jsonObject = null;
+      JSONArray resultsArray = null;
+      Log.i(LOG_TAG, "GET FB: " +JSON);
+      try{
+          jsonObject = new JSONObject(JSON);
+          if (jsonObject != null && jsonObject.length() != 0){
+              jsonObject = jsonObject.getJSONObject("query");
+              int count = Integer.parseInt(jsonObject.getString("count"));
+              if (count == 1){
+                  jsonObject = jsonObject.getJSONObject("results").getJSONObject("quote");
+                  batchOperations.add(buildBatchOperation(jsonObject));
+              } else{
+                  resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+                   if (resultsArray != null && resultsArray.length() != 0){
+                      for (int i = 0; i < resultsArray.length(); i++){
+                          jsonObject = resultsArray.getJSONObject(i);
+                          batchOperations.add(graphBuildBatchOperation(jsonObject));
+                      }
+                  }
+              }
+          }
+      } catch (JSONException e){
+          Log.e(LOG_TAG, "String to JSON failed: " + e);
+      }catch (NumberFormatException n){
+          throw n;
+      }
+      return batchOperations;
+  }
+
   public static String truncateBidPrice(String bidPrice)throws NumberFormatException{
     bidPrice = String.format("%.2f", Float.parseFloat(bidPrice));
     return bidPrice;
@@ -100,6 +132,28 @@ public class Utils {
         builder.withValue(QuoteColumns.ISUP, 0);
       } else {
           builder.withValue(QuoteColumns.ISUP, 1);
+      }
+
+    } catch (JSONException e){
+      e.printStackTrace();
+    }
+    return builder.build();
+  }
+
+  public static ContentProviderOperation graphBuildBatchOperation(JSONObject jsonObject)throws NumberFormatException{
+    ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
+            QuoteProvider.Graph.CONTENT_URI);
+    try {
+      String symbol = jsonObject.getString("Symbol");
+      String bid = jsonObject.getString("Adj_Close");
+      String date = jsonObject.getString("Date");
+
+      try {
+        builder.withValue(GraphColumns.SYMBOL, symbol);
+        builder.withValue(GraphColumns.BIDPRICE, truncateBidPrice(bid));
+        builder.withValue(GraphColumns.DATE, date);
+      }catch(NumberFormatException e){
+        throw e;
       }
 
     } catch (JSONException e){

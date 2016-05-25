@@ -63,8 +63,13 @@ public class StockTaskService extends GcmTaskService{
     try{
       // Base URL for the Yahoo query
       urlStringBuilder.append("https://query.yahooapis.com/v1/public/yql?q=");
-      urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol "
-        + "in (", "UTF-8"));
+      if(params.getTag().equals("graph")){
+          urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.historicaldata where symbol = "
+                  , "UTF-8"));
+      }else {
+          urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol "
+                  + "in (", "UTF-8"));
+      }
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
@@ -105,6 +110,21 @@ public class StockTaskService extends GcmTaskService{
       } catch (UnsupportedEncodingException e){
         e.printStackTrace();
       }
+    }else if (params.getTag().equals("graph")){
+        isUpdate = false;
+        // get symbol from params.getExtra and build query
+        String stockInput = params.getExtras().getString("symbol");
+        try {
+            urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\"" +
+                    " and" +
+                    " startDate = " +
+                    "\""+"2009-09-11"+"\"" +
+                    " and" +
+                    " endDate = " +
+                    "\""+"2010-03-10"+"\"", "UTF-8"));
+        } catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
     }
     // finalize the URL for the API query.
     urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
@@ -128,8 +148,13 @@ public class StockTaskService extends GcmTaskService{
             mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                 null, null);
           }
-          mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-              Utils.quoteJsonToContentVals(getResponse));
+          if (params.getTag().equals("graph")){
+              mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+                      Utils.graphQuoteJsonToContentVals(getResponse));
+          }else{
+              mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+                      Utils.quoteJsonToContentVals(getResponse));
+          }
         }catch (RemoteException | OperationApplicationException e){
             Log.e(LOG_TAG, "Error applying batch insert", e);
         }catch(NumberFormatException n){
