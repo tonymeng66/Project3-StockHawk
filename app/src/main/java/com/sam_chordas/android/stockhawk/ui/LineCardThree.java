@@ -11,22 +11,32 @@ import com.db.chart.view.LineChartView;
 import com.db.chart.view.animation.Animation;
 import com.sam_chordas.android.stockhawk.R;
 
+import java.util.List;
+
 
 public class LineCardThree extends CardController {
 
 
     private final LineChartView mChart;
 
-    public void setmLabels(String[] mLabels) {
-        this.mLabels = mLabels;
-    }
 
-    public void setmValues(float[] mValues) {
-        this.mValues = mValues;
-    }
+    private List<String> mLabelList;
+    private List mValueList;
 
     private String[] mLabels;
     private float[] mValues;
+
+    public void setmLabelList(List<String> mLabelList) {
+        this.mLabelList = mLabelList;
+        mLabels = mLabelList.toArray(new String[mLabelList.size()]);
+    }
+
+    public void setmValueList(List mValueList) {
+        this.mValueList = mValueList;
+        mValues =  new float[mValueList.size()];
+        for(int i=0;i<mValueList.size();i++)
+            mValues[i]=(float)mValueList.get(i);
+    }
 
 
     public LineCardThree(CardView card, Context context){
@@ -48,7 +58,7 @@ public class LineCardThree extends CardController {
         mChart.addData(dataset);
 
         mChart.setBorderSpacing(1)
-                .setAxisBorderValues(0, 100)
+                .setAxisBorderValues(0, 800)
                 .setXLabels(AxisController.LabelPosition.NONE)
                 .setYLabels(AxisController.LabelPosition.NONE)
                 .setXAxis(false)

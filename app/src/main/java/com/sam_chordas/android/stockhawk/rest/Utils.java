@@ -9,7 +9,12 @@ import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,4 +166,32 @@ public class Utils {
     }
     return builder.build();
   }
+
+   public static String GetCurrentDate(){
+       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+       Date date = new Date();
+       String todate = dateFormat.format(date);
+       return todate;
+   }
+
+   public static String GetDateFromWeekBack(){
+       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+       Calendar cal = Calendar.getInstance();
+       cal.add(Calendar.DATE, -7);
+       Date todate1 = cal.getTime();
+       String fromdate = dateFormat.format(todate1);
+       return fromdate;
+   }
+
+    public static String GetDateFromMonthBack(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        Date todate1 = cal.getTime();
+        String fromdate = dateFormat.format(todate1);
+        return fromdate;
+    }
 }
