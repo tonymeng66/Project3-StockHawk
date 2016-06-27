@@ -1,9 +1,11 @@
 package com.sam_chordas.android.stockhawk.data;
 
 import net.simonvt.schematic.annotation.AutoIncrement;
+import net.simonvt.schematic.annotation.ConflictResolutionType;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
+import net.simonvt.schematic.annotation.Unique;
 
 /**
  * Created by sam_chordas on 10/5/15.
@@ -15,6 +17,6 @@ public class GraphColumns {
   public static final String SYMBOL = "symbol";
   @DataType(DataType.Type.TEXT) @NotNull
   public static final String BIDPRICE = "bid_price";
-  @DataType(DataType.Type.TEXT) @NotNull
+  @DataType(DataType.Type.TEXT) @NotNull @Unique(onConflict = ConflictResolutionType.REPLACE)
   public static final String DATE = "date";
 }
