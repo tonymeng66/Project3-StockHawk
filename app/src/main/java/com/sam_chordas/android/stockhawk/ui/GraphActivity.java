@@ -54,8 +54,9 @@ public class GraphActivity extends Activity {
 
         cursor.close();
 
-
-        lineCard.init();
+        if(date.size()!=0 && price.size()!=0){
+            lineCard.init();
+        }
 
     }
 
