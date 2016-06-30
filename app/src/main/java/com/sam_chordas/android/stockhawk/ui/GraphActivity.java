@@ -20,12 +20,14 @@ public class GraphActivity extends Activity {
     private static final int GRAPH_LOADER = 0;
     private List<String> date = new ArrayList<String>();
     private List price = new ArrayList();
+    private List volume = new ArrayList();
 
     private static final String[] GRAPH_COLUMNS = {
             GraphColumns._ID,
             GraphColumns.SYMBOL,
             GraphColumns.DATE,
-            GraphColumns.BIDPRICE
+            GraphColumns.BIDPRICE,
+            GraphColumns.VOLUME
     };
 
     @Override
@@ -37,6 +39,7 @@ public class GraphActivity extends Activity {
         String symbol = intent.getStringExtra("symbol");
 
         LineCardThree lineCard = (new LineCardThree((CardView) findViewById(R.id.card2), getApplicationContext()));
+        BarCardThree barCard = (new BarCardThree((CardView) findViewById(R.id.card6), getApplicationContext()));
 
         Cursor cursor = getContentResolver().query(QuoteProvider.Graph.CONTENT_URI,
                 GRAPH_COLUMNS, GraphColumns.SYMBOL + "= ?",
@@ -46,16 +49,22 @@ public class GraphActivity extends Activity {
         while(cursor.moveToPosition(i)){
             date.add(i,cursor.getString(cursor.getColumnIndex(GraphColumns.DATE)));
             price.add(i,Float.valueOf((cursor.getString(cursor.getColumnIndex(GraphColumns.BIDPRICE)))));
+            volume.add(i,(Float.valueOf((cursor.getString(cursor.getColumnIndex(GraphColumns.VOLUME)))))/100000L);
             i++;
         }
 
         lineCard.setmLabelList(date);
         lineCard.setmValueList(price);
+        barCard.setmLabelList(date);
+        barCard.setmValueList(volume);
 
         cursor.close();
 
         if(date.size()!=0 && price.size()!=0){
             lineCard.init();
+        }
+        if(date.size()!=0 && volume.size()!=0){
+            barCard.init();
         }
 
     }

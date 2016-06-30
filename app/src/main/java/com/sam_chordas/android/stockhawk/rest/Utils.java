@@ -152,11 +152,13 @@ public class Utils {
       String symbol = jsonObject.getString("Symbol");
       String bid = jsonObject.getString("Adj_Close");
       String date = jsonObject.getString("Date");
+      String vol = jsonObject.getString("Volume");
 
       try {
         builder.withValue(GraphColumns.SYMBOL, symbol);
         builder.withValue(GraphColumns.BIDPRICE, truncateBidPrice(bid));
         builder.withValue(GraphColumns.DATE, date);
+        builder.withValue(GraphColumns.VOLUME, vol);
       }catch(NumberFormatException e){
         throw e;
       }
