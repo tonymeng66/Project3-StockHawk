@@ -2,11 +2,14 @@ package com.sam_chordas.android.stockhawk.ui;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.support.v7.widget.CardView;
 
 import com.db.chart.Tools;
 import com.db.chart.model.LineSet;
 import com.db.chart.view.AxisController;
+import com.db.chart.view.ChartView;
 import com.db.chart.view.LineChartView;
 import com.db.chart.view.animation.Animation;
 import com.sam_chordas.android.stockhawk.R;
@@ -52,18 +55,26 @@ public class LineCardThree extends CardController {
 
         LineSet dataset = new LineSet(mLabels, mValues);
         dataset.setColor(Color.parseColor("#53c1bd"))
-                .setFill(Color.parseColor("#3d6c73"))
-                .setThickness(4)
-                .setGradientFill(new int[]{Color.parseColor("#364d5a"), Color.parseColor("#3f7178")}, null);
+                //.setFill(Color.parseColor("#3d6c73"))
+                .setThickness(4);
+                //.setGradientFill(new int[]{Color.parseColor("#364d5a"), Color.parseColor("#3f7178")}, null);
         mChart.addData(dataset);
 
-        mChart.setBorderSpacing(1)
+        Paint gridPaint = new Paint();
+        gridPaint.setColor(Color.parseColor("#444444"));
+        gridPaint.setStyle(Paint.Style.STROKE);
+        gridPaint.setAntiAlias(true);
+        gridPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
+        gridPaint.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
+
+        mChart.setBorderSpacing(5)
                 .setAxisBorderValues(0, 800)
                 .setXLabels(AxisController.LabelPosition.NONE)
                 .setYLabels(AxisController.LabelPosition.NONE)
-                .setXAxis(false)
-                .setYAxis(false)
-                .setBorderSpacing(Tools.fromDpToPx(5));
+                .setXAxis(true)
+                .setYAxis(true)
+                .setGrid(ChartView.GridType.FULL, 4, 4, gridPaint)
+                .setBorderSpacing(Tools.fromDpToPx(0));
 
         Animation anim = new Animation().setEndAction(action);
 

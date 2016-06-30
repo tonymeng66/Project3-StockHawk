@@ -27,8 +27,8 @@ import com.sam_chordas.android.stockhawk.R;
 public class CardController {
 
 
-	private final ImageButton mPlayBtn;
-	private final ImageButton mUpdateBtn;
+//	private final ImageButton mPlayBtn;
+//	private final ImageButton mUpdateBtn;
 
 
 	private final Runnable showAction = new Runnable() {
@@ -60,25 +60,25 @@ public class CardController {
 	protected CardController(CardView card){
 		super();
 
-		RelativeLayout toolbar = (RelativeLayout) card.findViewById(R.id.chart_toolbar);
-		mPlayBtn = (ImageButton) toolbar.findViewById(R.id.play);
-		mUpdateBtn = (ImageButton) toolbar.findViewById(R.id.update);
-
-		mPlayBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				dismiss(showAction);
-			}
-		});
-
-		mUpdateBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				update();
-			}
-		});
+//		RelativeLayout toolbar = (RelativeLayout) card.findViewById(R.id.chart_toolbar);
+//		mPlayBtn = (ImageButton) toolbar.findViewById(R.id.play);
+//		mUpdateBtn = (ImageButton) toolbar.findViewById(R.id.update);
+//
+//		mPlayBtn.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				dismiss(showAction);
+//			}
+//		});
+//
+//		mUpdateBtn.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				update();
+//			}
+//		});
 	}
 
 
@@ -103,12 +103,12 @@ public class CardController {
 
 
 	private void lock(){
-		mPlayBtn.setEnabled(false);
-		mUpdateBtn.setEnabled(false);
+//		mPlayBtn.setEnabled(false);
+//		mUpdateBtn.setEnabled(false);
 	}
 
 	private void unlock(){
-		mPlayBtn.setEnabled(true);
-		mUpdateBtn.setEnabled(true);
+//		mPlayBtn.setEnabled(true);
+//		mUpdateBtn.setEnabled(true);
 	}
 }
