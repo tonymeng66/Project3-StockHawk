@@ -20,7 +20,9 @@ public class QuoteColumns {
   @DataType(DataType.Type.TEXT) @NotNull
   public static final String BIDPRICE = "bid_price";
   @DataType(DataType.Type.TEXT)
-  public static final String CREATED = "created";
+  public static final String TIME = "time";
+  @DataType(DataType.Type.TEXT)
+  public static final String VOLUME = "volume";
   @DataType(DataType.Type.INTEGER) @NotNull
   public static final String ISUP = "is_up";
   @DataType(DataType.Type.INTEGER) @NotNull

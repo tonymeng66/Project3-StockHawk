@@ -31,13 +31,18 @@ public class Utils {
   public static ArrayList quoteJsonToContentVals(String JSON)throws NumberFormatException{
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
     JSONObject jsonObject = null;
+
     JSONArray resultsArray = null;
     Log.i(LOG_TAG, "GET FB: " +JSON);
     try{
       jsonObject = new JSONObject(JSON);
+
       if (jsonObject != null && jsonObject.length() != 0){
         jsonObject = jsonObject.getJSONObject("query");
         int count = Integer.parseInt(jsonObject.getString("count"));
+        String created = jsonObject.getString("created");
+        if(created!=null)
+
         if (count == 1){
           jsonObject = jsonObject.getJSONObject("results")
               .getJSONObject("quote");
@@ -122,6 +127,8 @@ public class Utils {
       String symbol = jsonObject.getString("symbol");
       String bid = jsonObject.getString("Bid");
       String changeInPercent = jsonObject.getString("ChangeinPercent");
+      String volume =  jsonObject.getString("Volume");
+      String time = getCurrentTime();
 
       try {
         builder.withValue(QuoteColumns.SYMBOL, symbol);
@@ -130,6 +137,9 @@ public class Utils {
                 changeInPercent, true));
         builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
         builder.withValue(QuoteColumns.ISCURRENT, 1);
+        builder.withValue(QuoteColumns.TIME, time);
+        builder.withValue(QuoteColumns.VOLUME, volume);
+
       }catch(NumberFormatException e){
         throw e;
       }
@@ -169,8 +179,8 @@ public class Utils {
     return builder.build();
   }
 
-   public static String GetCurrentDate(){
-       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+   public static String getCurrentTime(){
+       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
        Date date = new Date();
        String todate = dateFormat.format(date);

@@ -26,8 +26,6 @@ public class BarCardThree extends CardController {
 
 
     private final Context mContext;
-
-
     private final BarChartView mChart;
 
     private List<String> mLabelList;

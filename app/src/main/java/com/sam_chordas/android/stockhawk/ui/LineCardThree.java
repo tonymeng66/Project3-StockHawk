@@ -22,6 +22,17 @@ public class LineCardThree extends CardController {
 
     private final LineChartView mChart;
 
+    public void setmLowPrice(int mLowPrice) {
+        this.mLowPrice = mLowPrice;
+    }
+
+    public void setmHighPrice(int mHighPrice) {
+        this.mHighPrice = mHighPrice;
+    }
+
+    private int mHighPrice;
+    private int mLowPrice;
+
 
     private List<String> mLabelList;
     private List mValueList;
@@ -68,7 +79,7 @@ public class LineCardThree extends CardController {
         gridPaint.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
 
         mChart.setBorderSpacing(5)
-                .setAxisBorderValues(0, 800)
+                .setAxisBorderValues(mLowPrice, mHighPrice)
                 .setXLabels(AxisController.LabelPosition.NONE)
                 .setYLabels(AxisController.LabelPosition.NONE)
                 .setXAxis(true)

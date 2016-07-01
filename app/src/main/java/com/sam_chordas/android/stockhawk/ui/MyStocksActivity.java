@@ -102,6 +102,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     symbol = c.getString(c.getColumnIndex(QuoteColumns.SYMBOL));
                 }
 
+                c.close();
+
                 mServiceIntent.putExtra("tag", "graph");
                 mServiceIntent.putExtra("symbol", symbol);
                 startService(mServiceIntent);
@@ -135,9 +137,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
-                    return;
+                    c.close();
                   } else {
                     // Add the stock to DB
+                    c.close();
                     mServiceIntent.putExtra("tag", "add");
                     mServiceIntent.putExtra("symbol", input.toString());
                     startService(mServiceIntent);
@@ -148,7 +151,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         } else {
           networkToast();
         }
-
       }
     });
 
