@@ -19,10 +19,16 @@ public class QuoteColumns {
   public static final String CHANGE = "change";
   @DataType(DataType.Type.TEXT) @NotNull
   public static final String BIDPRICE = "bid_price";
-  @DataType(DataType.Type.TEXT)
-  public static final String TIME = "time";
-  @DataType(DataType.Type.TEXT)
+  @DataType(DataType.Type.TEXT) @NotNull
+  public static final String DATE = "date";
+  @DataType(DataType.Type.TEXT) @NotNull
   public static final String VOLUME = "volume";
+  @DataType(DataType.Type.TEXT) @NotNull
+  public static final String OPEN = "open";
+  @DataType(DataType.Type.TEXT) @NotNull
+  public static final String DAYSHIGH = "days_high";
+  @DataType(DataType.Type.TEXT) @NotNull
+  public static final String DAYSLOW = "days_low";
   @DataType(DataType.Type.INTEGER) @NotNull
   public static final String ISUP = "is_up";
   @DataType(DataType.Type.INTEGER) @NotNull

@@ -60,6 +60,22 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Cursor mCursor;
   boolean isConnected;
 
+
+
+  private static final String[] QUOTE_COLUMNS = {
+          QuoteColumns._ID,
+          QuoteColumns.SYMBOL,
+          QuoteColumns.PERCENT_CHANGE,
+          QuoteColumns.CHANGE,
+          QuoteColumns.BIDPRICE,
+          QuoteColumns.ISUP,
+          QuoteColumns.ISCURRENT,
+          QuoteColumns.DAYSHIGH,
+          QuoteColumns.DAYSLOW,
+          QuoteColumns.DATE,
+          QuoteColumns.VOLUME
+  };
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -103,10 +119,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 }
 
                 c.close();
-
-                mServiceIntent.putExtra("tag", "graph");
-                mServiceIntent.putExtra("symbol", symbol);
-                startService(mServiceIntent);
 
                 Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
                 intent.putExtra("symbol",symbol);
@@ -230,8 +242,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public Loader<Cursor> onCreateLoader(int id, Bundle args){
     // This narrows the return to only the stocks that are most current.
     return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
-        new String[]{ QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
-            QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
+        QUOTE_COLUMNS,
         QuoteColumns.ISCURRENT + " = ?",
         new String[]{"1"},
         null);

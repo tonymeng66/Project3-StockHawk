@@ -66,7 +66,7 @@ public class Utils {
     return batchOperations;
   }
 
-  public static ArrayList graphQuoteJsonToContentVals(String JSON)throws NumberFormatException{
+  public static ArrayList graphJsonToContentVals(String JSON)throws NumberFormatException{
       ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
       JSONObject jsonObject = null;
       JSONArray resultsArray = null;
