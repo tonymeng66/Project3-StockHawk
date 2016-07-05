@@ -73,6 +73,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
           QuoteColumns.DAYSHIGH,
           QuoteColumns.DAYSLOW,
           QuoteColumns.DATE,
+          QuoteColumns.OPEN,
           QuoteColumns.VOLUME
   };
 
@@ -172,7 +173,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     mTitle = getTitle();
     if (isConnected){
-      long period = 3600L;
+      long period = 30L;
       long flex = 10L;
       String periodicTag = "periodic";
 

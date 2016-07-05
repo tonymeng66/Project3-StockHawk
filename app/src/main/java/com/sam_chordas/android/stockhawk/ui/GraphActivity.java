@@ -78,6 +78,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
             QuoteColumns.DAYSHIGH,
             QuoteColumns.DAYSLOW,
             QuoteColumns.DATE,
+            QuoteColumns.OPEN,
             QuoteColumns.VOLUME
     };
 
@@ -99,7 +100,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
         mBidPrice = (TextView) findViewById(R.id.bid_price);
         mChange = (TextView) findViewById(R.id.change);
         mPerChange = (TextView) findViewById(R.id.per_change);
-        mOpen = (TextView) findViewById(R.id.open);
+        mOpen = (TextView) findViewById(R.id.open_value);
         mDaysHigh =  (TextView) findViewById(R.id.days_high_value);
         mDaysLowValue = (TextView) findViewById(R.id.days_low_value);
         mLastTradeDate = (TextView) findViewById(R.id.date);
@@ -123,8 +124,8 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
     @Override
     protected void onResume() {
         super.onResume();
-        getLoaderManager().initLoader(QUOTE_LOADER, null, this);
-        getLoaderManager().initLoader(GRAPH_LOADER, null, this);
+        getLoaderManager().restartLoader(QUOTE_LOADER, null, this);
+        getLoaderManager().restartLoader(GRAPH_LOADER, null, this);
     }
 
     @Override
@@ -156,7 +157,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
                 mBidPrice.setText(data.getString(data.getColumnIndex(QuoteColumns.BIDPRICE)));
                 mChange.setText(data.getString(data.getColumnIndex(QuoteColumns.CHANGE)));
                 mPerChange.setText(data.getString(data.getColumnIndex(QuoteColumns.PERCENT_CHANGE)));
-                //mOpen.setText(data.getString(data.getColumnIndex(QuoteColumns.OPEN)));
+                mOpen.setText(data.getString(data.getColumnIndex(QuoteColumns.OPEN)));
                 mDaysHigh.setText(data.getString(data.getColumnIndex(QuoteColumns.DAYSHIGH)));
                 mDaysLowValue.setText(data.getString(data.getColumnIndex(QuoteColumns.DAYSLOW)));
                 mLastTradeDate.setText(data.getString(data.getColumnIndex(QuoteColumns.DATE)));
@@ -252,7 +253,6 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
         if (cursor != null) {
             for (int i = 0; i < 3; i++) {
                 position[i] = Math.round(cursor.getCount() * 0.2F * i);
-                Log.d("GraphActivity", Integer.toString(position[i]));
             }
 
         if(cursor.moveToPosition(position[2])){

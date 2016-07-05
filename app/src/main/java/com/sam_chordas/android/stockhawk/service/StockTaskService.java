@@ -36,11 +36,13 @@ public class StockTaskService extends GcmTaskService{
   StringBuilder urlStringBuilderQuote = new StringBuilder();
   StringBuilder urlStringBuilderGraph = new StringBuilder();
 
+
   public StockTaskService(){}
 
   public StockTaskService(Context context){
     mContext = context;
   }
+
   String fetchData(String url) throws IOException{
     Request request = new Request.Builder()
         .url(url)
@@ -56,8 +58,6 @@ public class StockTaskService extends GcmTaskService{
     if (mContext == null){
       mContext = this;
     }
-
-
 
     try{
       // Base URL for the Yahoo query
@@ -110,7 +110,8 @@ public class StockTaskService extends GcmTaskService{
     }
 
     // get symbol from params.getExtra and build query
-    String stockInput = params.getExtras().getString("symbol");
+    //String stockInput = params.getExtras().getString("symbol");
+      String stockInput = "GOOG";
     try {
         urlStringBuilderGraph.append(URLEncoder.encode("\""+stockInput+"\"" +
                 " and" +
