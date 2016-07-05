@@ -128,7 +128,10 @@ public class Utils {
       String bid = jsonObject.getString("Bid");
       String changeInPercent = jsonObject.getString("ChangeinPercent");
       String volume =  jsonObject.getString("Volume");
-      String time = getCurrentTime();
+      String open = jsonObject.getString("Open");
+      String daysHigh = jsonObject.getString("DaysHigh");
+      String daysLow = jsonObject.getString("DaysLow");
+      String date = jsonObject.getString("LastTradeDate");
 
       try {
         builder.withValue(QuoteColumns.SYMBOL, symbol);
@@ -137,8 +140,11 @@ public class Utils {
                 changeInPercent, true));
         builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
         builder.withValue(QuoteColumns.ISCURRENT, 1);
-        builder.withValue(QuoteColumns.TIME, time);
         builder.withValue(QuoteColumns.VOLUME, volume);
+        builder.withValue(QuoteColumns.OPEN, open);
+        builder.withValue(QuoteColumns.DAYSHIGH, daysHigh);
+        builder.withValue(QuoteColumns.DAYSLOW, daysLow);
+        builder.withValue(QuoteColumns.DATE, date);
 
       }catch(NumberFormatException e){
         throw e;
