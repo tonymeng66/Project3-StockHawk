@@ -23,7 +23,6 @@ public class GraphColumns {
   public static final String BIDPRICE = "bid_price";
   @DataType(DataType.Type.TEXT)
   @NotNull
-  @Unique(onConflict = ConflictResolutionType.REPLACE)
   public static final String DATE = "date";
   @DataType(DataType.Type.TEXT)
   @NotNull

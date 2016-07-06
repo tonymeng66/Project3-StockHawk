@@ -120,6 +120,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 }
 
                 c.close();
+                mServiceIntent.putExtra("tag", "graph");
+                mServiceIntent.putExtra("symbol", symbol);
+                startService(mServiceIntent);
 
                 Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
                 intent.putExtra("symbol",symbol);
