@@ -174,6 +174,9 @@ public class StockTaskService extends GcmTaskService{
                   new String[]{stockInput, "2016-07-05"}, null);
 
           if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {
+              //work around for simonVT cannot implemnt unique constrains on 2 keys.
+              mContext.getContentResolver().delete(QuoteProvider.Graph.CONTENT_URI,
+                      GraphColumns.SYMBOL + " = ?",new String[] {stockInput});
               // Init task. Populates DB with quotes for the symbols seen below
               try {
                   urlStringBuilderGraph.append("https://query.yahooapis.com/v1/public/yql?q=");
