@@ -194,7 +194,7 @@ public class Utils {
        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
        Calendar cal = Calendar.getInstance();
-       cal.add(Calendar.DATE, -200);
+       cal.add(Calendar.DATE, -180);
        Date todate1 = cal.getTime();
        String fromdate = dateFormat.format(todate1);
        return fromdate;
