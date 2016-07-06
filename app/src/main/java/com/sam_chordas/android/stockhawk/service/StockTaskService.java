@@ -171,7 +171,7 @@ public class StockTaskService extends GcmTaskService{
 
           initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Graph.CONTENT_URI,
                   GRAPH_COLUMNS, GraphColumns.SYMBOL + " = ? " + " AND " + GraphColumns.DATE + " = ?",
-                  new String[]{stockInput, "2016-07-05"}, null);
+                  new String[]{stockInput, Utils.getCurrentDate()}, null);
 
           if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {
               //work around for simonVT cannot implemnt unique constrains on 2 keys.
@@ -185,10 +185,10 @@ public class StockTaskService extends GcmTaskService{
                   urlStringBuilderGraph.append(URLEncoder.encode("\"" + stockInput + "\"" +
                           " and" +
                           " startDate = " +
-                          "\"" + "2016-02-04" + "\"" +
+                          "\"" + Utils.getDate3MBack() + "\"" +
                           " and" +
                           " endDate = " +
-                          "\"" + "2016-07-05" + "\"", "UTF-8"));
+                          "\"" + Utils.getCurrentDate() + "\"", "UTF-8"));
                   urlStringBuilderGraph.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
                           + "org%2Falltableswithkeys&callback=");
               } catch (UnsupportedEncodingException e) {

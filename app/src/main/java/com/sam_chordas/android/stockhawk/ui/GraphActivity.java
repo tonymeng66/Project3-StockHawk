@@ -15,6 +15,7 @@ import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.GraphColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.rest.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +144,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
                 loader = new CursorLoader(this,QuoteProvider.Graph.CONTENT_URI,
                         GRAPH_COLUMNS,
                         GraphColumns.SYMBOL + "= ?",
-                        new String[] { mSymbol }, null);
+                        new String[] { mSymbol }, GraphColumns.DATE + " asc ");
                 break;
         }
         return loader;

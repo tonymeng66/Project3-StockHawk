@@ -182,31 +182,22 @@ public class Utils {
     return builder.build();
   }
 
-   public static String getCurrentTime(){
-       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+   public static String getCurrentDate(){
+       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
        Date date = new Date();
        String todate = dateFormat.format(date);
        return todate;
    }
 
-   public static String GetDateFromWeekBack(){
+   public static String getDate3MBack(){
        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
        Calendar cal = Calendar.getInstance();
-       cal.add(Calendar.DATE, -7);
+       cal.add(Calendar.DATE, -200);
        Date todate1 = cal.getTime();
        String fromdate = dateFormat.format(todate1);
        return fromdate;
    }
 
-    public static String GetDateFromMonthBack(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -1);
-        Date todate1 = cal.getTime();
-        String fromdate = dateFormat.format(todate1);
-        return fromdate;
-    }
 }
