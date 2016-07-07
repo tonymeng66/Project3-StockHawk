@@ -18,13 +18,13 @@ public class GraphColumns {
   @DataType(DataType.Type.TEXT)
   @NotNull
   public static final String SYMBOL = "symbol";
-  @DataType(DataType.Type.TEXT)
+  @DataType(DataType.Type.REAL)
   @NotNull
   public static final String BIDPRICE = "bid_price";
   @DataType(DataType.Type.TEXT)
   @NotNull
   public static final String DATE = "date";
-  @DataType(DataType.Type.TEXT)
+  @DataType(DataType.Type.REAL)
   @NotNull
   public static final String VOLUME = "volume";
 }

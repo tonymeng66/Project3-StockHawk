@@ -2,12 +2,10 @@ package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.sam_chordas.android.stockhawk.data.GraphColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -101,6 +99,10 @@ public class Utils {
     return bidPrice;
   }
 
+  public static Float stringToFloat(String bidPrice)throws NumberFormatException{
+      return  Float.parseFloat(bidPrice);
+  }
+
   public static String truncateChange(String change, boolean isPercentChange)throws NumberFormatException{
     String weight = change.substring(0,1);
     String ampersand = "";
@@ -173,9 +175,9 @@ public class Utils {
 
       try {
         builder.withValue(GraphColumns.SYMBOL, symbol);
-        builder.withValue(GraphColumns.BIDPRICE, truncateBidPrice(bid));
+        builder.withValue(GraphColumns.BIDPRICE, stringToFloat(bid));
         builder.withValue(GraphColumns.DATE, date);
-        builder.withValue(GraphColumns.VOLUME, vol);
+        builder.withValue(GraphColumns.VOLUME, stringToFloat(vol));
       }catch(NumberFormatException e){
         throw e;
       }

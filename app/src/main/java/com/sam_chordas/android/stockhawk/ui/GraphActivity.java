@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -199,6 +200,8 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
             mLineCard.setmHighPrice(mY1);
             mLineCard.setmLowPrice(mY5);
         }
+
+        DatabaseUtils.dumpCursor(cursor);
 
         mYlabel1.setText(Integer.toString(mY1));
         mYlabel2.setText(Integer.toString(mY2));
