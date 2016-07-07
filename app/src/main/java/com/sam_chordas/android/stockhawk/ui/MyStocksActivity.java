@@ -37,6 +37,7 @@ import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
+import com.sam_chordas.android.stockhawk.data.Columns;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,23 +61,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
-
-
-
-  private static final String[] QUOTE_COLUMNS = {
-          QuoteColumns._ID,
-          QuoteColumns.SYMBOL,
-          QuoteColumns.PERCENT_CHANGE,
-          QuoteColumns.CHANGE,
-          QuoteColumns.BIDPRICE,
-          QuoteColumns.ISUP,
-          QuoteColumns.ISCURRENT,
-          QuoteColumns.DAYSHIGH,
-          QuoteColumns.DAYSLOW,
-          QuoteColumns.DATE,
-          QuoteColumns.OPEN,
-          QuoteColumns.VOLUME
-  };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +95,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
                 Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                        QUOTE_COLUMNS,
+                        Columns.QUOTE_COLUMNS,
                         QuoteColumns.ISCURRENT + " = ?",
                         new String[]{"1"},
                         null);
@@ -122,7 +106,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 }
 
                 c.close();
-                Log.d("symbol_mystock",symbol);
                 mServiceIntent.putExtra("tag", "graph");
                 mServiceIntent.putExtra("symbol", symbol);
                 startService(mServiceIntent);
@@ -249,7 +232,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public Loader<Cursor> onCreateLoader(int id, Bundle args){
     // This narrows the return to only the stocks that are most current.
     return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
-        QUOTE_COLUMNS,
+            Columns.QUOTE_COLUMNS,
         QuoteColumns.ISCURRENT + " = ?",
         new String[]{"1"},
         null);

@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.sam_chordas.android.stockhawk.data.GraphColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
+import com.sam_chordas.android.stockhawk.data.Columns;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +34,10 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
     private String mHighVolume;
     private int mY1=0, mY2 =0, mY3 =0, mY4 =0, mY5 =0, mY6 =0, mY7 =0, mY8 =0, mY9 =0;
 
-    LineCardThree mLineCard;
-    BarCardThree mBarCard;
+    private LineCardThree mLineCard;
+    private BarCardThree mBarCard;
 
+    private Toolbar mAppbar;
     private TextView mBidPrice;
     private TextView mChange;
     private TextView mPerChange;
@@ -61,29 +64,6 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
     private static final int QUOTE_LOADER = 0;
     private static final int GRAPH_LOADER = 1;
 
-    private static final String[] GRAPH_COLUMNS = {
-            GraphColumns._ID,
-            GraphColumns.SYMBOL,
-            GraphColumns.DATE,
-            GraphColumns.BIDPRICE,
-            GraphColumns.VOLUME
-    };
-    private static final String[] QUOTE_COLUMNS = {
-            QuoteColumns._ID,
-            QuoteColumns.SYMBOL,
-            QuoteColumns.PERCENT_CHANGE,
-            QuoteColumns.CHANGE,
-            QuoteColumns.BIDPRICE,
-            QuoteColumns.ISUP,
-            QuoteColumns.ISCURRENT,
-            QuoteColumns.DAYSHIGH,
-            QuoteColumns.DAYSLOW,
-            QuoteColumns.DATE,
-            QuoteColumns.OPEN,
-            QuoteColumns.VOLUME
-    };
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +78,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
         mLineCard = (new LineCardThree((CardView) findViewById(R.id.card2), getApplicationContext()));
         mBarCard = (new BarCardThree((CardView) findViewById(R.id.card6), getApplicationContext()));
 
+        mAppbar = (Toolbar) findViewById(R.id.toolbar);
         mBidPrice = (TextView) findViewById(R.id.bid_price);
         mChange = (TextView) findViewById(R.id.change);
         mPerChange = (TextView) findViewById(R.id.per_change);
@@ -135,14 +116,14 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
         switch(id) {
             case QUOTE_LOADER:
                 loader = new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
-                        QUOTE_COLUMNS,
+                        Columns.QUOTE_COLUMNS,
                         QuoteColumns.ISCURRENT + " = ?" + " AND " + QuoteColumns.SYMBOL + " = ? ",
                         new String[]{"1", mSymbol},
                         null);
             break;
             case GRAPH_LOADER:
                 loader = new CursorLoader(this,QuoteProvider.Graph.CONTENT_URI,
-                        GRAPH_COLUMNS,
+                        Columns.GRAPH_COLUMNS,
                         GraphColumns.SYMBOL + "= ?",
                         new String[] { mSymbol }, GraphColumns.DATE + " asc ");
                 break;
@@ -162,6 +143,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
                 mDaysHigh.setText(data.getString(data.getColumnIndex(QuoteColumns.DAYSHIGH)));
                 mDaysLowValue.setText(data.getString(data.getColumnIndex(QuoteColumns.DAYSLOW)));
                 mLastTradeDate.setText(data.getString(data.getColumnIndex(QuoteColumns.DATE)));
+                mAppbar.setTitle(data.getString(data.getColumnIndex(QuoteColumns.NAME)));
             }
                 break;
 
@@ -201,7 +183,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
 
     private void calYlabels(){
         Cursor cursor = getContentResolver().query(QuoteProvider.Graph.CONTENT_URI,
-                GRAPH_COLUMNS, GraphColumns.SYMBOL + "= ?",
+                Columns.GRAPH_COLUMNS, GraphColumns.SYMBOL + "= ?",
                 new String[] { mSymbol }, GraphColumns.BIDPRICE + " desc ");
 
         if(cursor.moveToFirst()) {
@@ -225,7 +207,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
         mYlabel5.setText(Integer.toString(mY5));
 
         cursor = getContentResolver().query(QuoteProvider.Graph.CONTENT_URI,
-                GRAPH_COLUMNS, GraphColumns.SYMBOL + "= ?",
+                Columns.GRAPH_COLUMNS, GraphColumns.SYMBOL + "= ?",
                 new String[] { mSymbol }, GraphColumns.VOLUME + " desc ");
 
         if(cursor.moveToFirst()) {

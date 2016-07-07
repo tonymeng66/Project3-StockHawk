@@ -131,6 +131,7 @@ public class Utils {
       String daysHigh = jsonObject.getString("DaysHigh");
       String daysLow = jsonObject.getString("DaysLow");
       String date = jsonObject.getString("LastTradeDate");
+      String name = jsonObject.getString("Name");
 
       try {
         builder.withValue(QuoteColumns.SYMBOL, symbol);
@@ -144,6 +145,7 @@ public class Utils {
         builder.withValue(QuoteColumns.DAYSHIGH, daysHigh);
         builder.withValue(QuoteColumns.DAYSLOW, daysLow);
         builder.withValue(QuoteColumns.DATE, date);
+        builder.withValue(QuoteColumns.NAME, name);
 
       }catch(NumberFormatException e){
         throw e;
@@ -184,13 +186,15 @@ public class Utils {
     return builder.build();
   }
 
-   public static String getCurrentDate(){
-       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static String getYesterDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-       Date date = new Date();
-       String todate = dateFormat.format(date);
-       return todate;
-   }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        Date todate1 = cal.getTime();
+        String fromdate = dateFormat.format(todate1);
+        return fromdate;
+    }
 
    public static String getDate6MBack(){
        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
