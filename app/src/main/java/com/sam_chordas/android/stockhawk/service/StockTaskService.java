@@ -11,6 +11,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.data.Columns;
 import com.sam_chordas.android.stockhawk.data.GraphColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -37,27 +38,7 @@ public class StockTaskService extends GcmTaskService{
   StringBuilder urlStringBuilderQuote = new StringBuilder();
   StringBuilder urlStringBuilderGraph = new StringBuilder();
 
-  private static final String[] GRAPH_COLUMNS = {
-          GraphColumns._ID,
-          GraphColumns.SYMBOL,
-          GraphColumns.DATE,
-          GraphColumns.BIDPRICE,
-          GraphColumns.VOLUME
-  };
-  private static final String[] QUOTE_COLUMNS = {
-          QuoteColumns._ID,
-          QuoteColumns.SYMBOL,
-          QuoteColumns.PERCENT_CHANGE,
-          QuoteColumns.CHANGE,
-          QuoteColumns.BIDPRICE,
-          QuoteColumns.ISUP,
-          QuoteColumns.ISCURRENT,
-          QuoteColumns.DAYSHIGH,
-          QuoteColumns.DAYSLOW,
-          QuoteColumns.DATE,
-          QuoteColumns.OPEN,
-          QuoteColumns.VOLUME
-  };
+
 
 
   public StockTaskService(){}
@@ -106,6 +87,8 @@ public class StockTaskService extends GcmTaskService{
                               URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
                   } catch (UnsupportedEncodingException e) {
                       e.printStackTrace();
+                  }finally {
+                      initQueryCursor.close();
                   }
               } else if (initQueryCursor != null) {
                   DatabaseUtils.dumpCursor(initQueryCursor);
@@ -120,6 +103,8 @@ public class StockTaskService extends GcmTaskService{
                       urlStringBuilderQuote.append(URLEncoder.encode(mStoredSymbols.toString(), "UTF-8"));
                   } catch (UnsupportedEncodingException e) {
                       e.printStackTrace();
+                  }finally {
+                      initQueryCursor.close();
                   }
               }
           } else if (params.getTag().equals("add")) {
@@ -169,7 +154,7 @@ public class StockTaskService extends GcmTaskService{
           String stockInput = params.getExtras().getString("symbol");
 
           initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Graph.CONTENT_URI,
-                  GRAPH_COLUMNS, GraphColumns.SYMBOL + " = ? " + " AND " + GraphColumns.DATE + " = ?",
+                  Columns.GRAPH_COLUMNS, GraphColumns.SYMBOL + " = ? " + " AND " + GraphColumns.DATE + " = ?",
                   new String[]{stockInput, Utils.getYesterDate()}, null);
 
           if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {
@@ -192,7 +177,10 @@ public class StockTaskService extends GcmTaskService{
                           + "org%2Falltableswithkeys&callback=");
               } catch (UnsupportedEncodingException e) {
                   e.printStackTrace();
+              }finally {
+                  initQueryCursor.close();
               }
+
               if (urlStringBuilderGraph != null) {
                   urlString = urlStringBuilderGraph.toString();
                   Log.d(LOG_TAG, urlString);
@@ -213,6 +201,7 @@ public class StockTaskService extends GcmTaskService{
                   }
               }
           } else if (initQueryCursor != null) {
+              initQueryCursor.close();
               result = GcmNetworkManager.RESULT_SUCCESS;
           }
       }   return result;

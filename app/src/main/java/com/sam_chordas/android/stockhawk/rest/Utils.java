@@ -99,10 +99,6 @@ public class Utils {
     return bidPrice;
   }
 
-  public static Float stringToFloat(String bidPrice)throws NumberFormatException{
-      return  Float.parseFloat(bidPrice);
-  }
-
   public static String truncateChange(String change, boolean isPercentChange)throws NumberFormatException{
     String weight = change.substring(0,1);
     String ampersand = "";
