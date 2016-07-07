@@ -5,8 +5,10 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -145,6 +147,16 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
                 mDaysLowValue.setText(data.getString(data.getColumnIndex(QuoteColumns.DAYSLOW)));
                 mLastTradeDate.setText(data.getString(data.getColumnIndex(QuoteColumns.DATE)));
                 mAppbar.setTitle(data.getString(data.getColumnIndex(QuoteColumns.NAME)));
+
+                if (data.getInt(data.getColumnIndex("is_up")) == 1){
+                    mBidPrice.setTextColor(this.getResources().getColor(R.color.material_green_700));
+                    mChange.setTextColor(this.getResources().getColor(R.color.material_green_700));
+                    mPerChange.setTextColor(this.getResources().getColor(R.color.material_green_700));
+                } else{
+                    mBidPrice.setTextColor(this.getResources().getColor(R.color.material_red_700));
+                    mChange.setTextColor(this.getResources().getColor(R.color.material_red_700));
+                    mPerChange.setTextColor(this.getResources().getColor(R.color.material_red_700));
+                }
             }
                 break;
 
@@ -193,15 +205,16 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
         }
         if(cursor.moveToLast()) {
             mLowPrice = cursor.getString(cursor.getColumnIndex(GraphColumns.BIDPRICE));
-            mY5 = (int)Math.round(Float.valueOf(mLowPrice)*0.9);
+            if(Float.valueOf(mLowPrice)<=4)
+                mY5 = 0;
+            else
+                mY5 = (int)Math.round(Float.valueOf(mLowPrice)*0.9);
             mY2 = (int) Math.round((mY1 - mY5)*0.75+ mY5);
             mY3 = (int) Math.round((mY1 - mY5)*0.5+ mY5);
             mY4 = (int) Math.round((mY1 - mY5)*0.25+ mY5);
             mLineCard.setmHighPrice(mY1);
             mLineCard.setmLowPrice(mY5);
         }
-
-        DatabaseUtils.dumpCursor(cursor);
 
         mYlabel1.setText(Integer.toString(mY1));
         mYlabel2.setText(Integer.toString(mY2));

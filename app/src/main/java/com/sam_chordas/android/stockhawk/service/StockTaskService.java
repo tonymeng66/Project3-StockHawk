@@ -21,7 +21,6 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import com.sam_chordas.android.stockhawk.data.Columns;
 
 /**
  * Created by sam_chordas on 9/30/15.
@@ -38,7 +37,27 @@ public class StockTaskService extends GcmTaskService{
   StringBuilder urlStringBuilderQuote = new StringBuilder();
   StringBuilder urlStringBuilderGraph = new StringBuilder();
 
-
+  private static final String[] GRAPH_COLUMNS = {
+          GraphColumns._ID,
+          GraphColumns.SYMBOL,
+          GraphColumns.DATE,
+          GraphColumns.BIDPRICE,
+          GraphColumns.VOLUME
+  };
+  private static final String[] QUOTE_COLUMNS = {
+          QuoteColumns._ID,
+          QuoteColumns.SYMBOL,
+          QuoteColumns.PERCENT_CHANGE,
+          QuoteColumns.CHANGE,
+          QuoteColumns.BIDPRICE,
+          QuoteColumns.ISUP,
+          QuoteColumns.ISCURRENT,
+          QuoteColumns.DAYSHIGH,
+          QuoteColumns.DAYSLOW,
+          QuoteColumns.DATE,
+          QuoteColumns.OPEN,
+          QuoteColumns.VOLUME
+  };
 
 
   public StockTaskService(){}
@@ -150,7 +169,7 @@ public class StockTaskService extends GcmTaskService{
           String stockInput = params.getExtras().getString("symbol");
 
           initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Graph.CONTENT_URI,
-                  Columns.GRAPH_COLUMNS, GraphColumns.SYMBOL + " = ? " + " AND " + GraphColumns.DATE + " = ?",
+                  GRAPH_COLUMNS, GraphColumns.SYMBOL + " = ? " + " AND " + GraphColumns.DATE + " = ?",
                   new String[]{stockInput, Utils.getYesterDate()}, null);
 
           if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {

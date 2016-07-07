@@ -169,8 +169,8 @@ public class Utils {
             QuoteProvider.Graph.CONTENT_URI);
     try {
       String symbol = jsonObject.getString("Symbol");
-      String bid = jsonObject.getString("Adj_Close");
-      double date = jsonObject.getDouble("Date");
+      double bid = jsonObject.getDouble("Adj_Close");
+      String date = jsonObject.getString("Date");
       double vol = jsonObject.getDouble("Volume");
 
       try {
