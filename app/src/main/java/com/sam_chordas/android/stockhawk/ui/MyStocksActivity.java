@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -109,10 +110,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                //TODO:
-                // do something on item click
                 Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                        null, null,null,null);
+                        QUOTE_COLUMNS,
+                        QuoteColumns.ISCURRENT + " = ?",
+                        new String[]{"1"},
+                        null);
                 String symbol=null;
 
                 if(c.moveToPosition(position)){
@@ -120,6 +122,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 }
 
                 c.close();
+                Log.d("symbol_mystock",symbol);
                 mServiceIntent.putExtra("tag", "graph");
                 mServiceIntent.putExtra("symbol", symbol);
                 startService(mServiceIntent);

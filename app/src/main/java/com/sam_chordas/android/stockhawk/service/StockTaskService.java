@@ -151,7 +151,6 @@ public class StockTaskService extends GcmTaskService{
                           mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                                   null, null);
                       }
-
                       mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                               Utils.quoteJsonToContentVals(getResponse));
                   } catch (RemoteException | OperationApplicationException e) {
@@ -185,7 +184,7 @@ public class StockTaskService extends GcmTaskService{
                   urlStringBuilderGraph.append(URLEncoder.encode("\"" + stockInput + "\"" +
                           " and" +
                           " startDate = " +
-                          "\"" + Utils.getDate3MBack() + "\"" +
+                          "\"" + Utils.getDate6MBack() + "\"" +
                           " and" +
                           " endDate = " +
                           "\"" + Utils.getCurrentDate() + "\"", "UTF-8"));

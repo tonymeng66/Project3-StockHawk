@@ -166,8 +166,6 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
                 break;
 
             case GRAPH_LOADER:
-
-
             calXlabels(data);
             calYlabels();
 
@@ -232,7 +230,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
 
         if(cursor.moveToFirst()) {
             mHighVolume = cursor.getString(cursor.getColumnIndex(GraphColumns.VOLUME));
-            mY6 = (int)Math.round(Float.valueOf(mHighVolume)*1.1/1000000L);
+            mY6 = (int)Math.round(Float.valueOf(mHighVolume)/1000000L);
             mY7 = (int) Math.round((mY6 *0.75));
             mY8 = (int) Math.round((mY6 *0.5));
             mY9 = (int) Math.round((mY6 *0.25));
@@ -249,23 +247,14 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
 
     private void calXlabels(Cursor cursor) {
 
-        int position[] = new int[3];
-
-        if (cursor != null) {
-            for (int i = 0; i < 3; i++) {
-                position[i] = Math.round(cursor.getCount() * 0.2F * i);
-            }
-
-        if(cursor.moveToPosition(position[2])){
+        if(cursor.moveToFirst()){
             mXlabel1.setText(cursor.getString(cursor.getColumnIndex(GraphColumns.DATE)));
         }
-        if(cursor.moveToPosition(position[1])){
+        if(cursor.moveToPosition(Math.round(cursor.getCount()*0.5F))){
             mXlabel2.setText(cursor.getString(cursor.getColumnIndex(GraphColumns.DATE)));
         }
-        if(cursor.moveToPosition(position[0])){
+        if(cursor.moveToLast()){
             mXlabel3.setText(cursor.getString(cursor.getColumnIndex(GraphColumns.DATE)));
-        }
-
         }
     }
 }

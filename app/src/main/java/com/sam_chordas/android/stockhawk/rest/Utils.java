@@ -73,6 +73,8 @@ public class Utils {
           if (jsonObject != null && jsonObject.length() != 0){
               jsonObject = jsonObject.getJSONObject("query");
               int count = Integer.parseInt(jsonObject.getString("count"));
+              //TODO
+              //do something when count = 0
               if (count == 1){
                   jsonObject = jsonObject.getJSONObject("results").getJSONObject("quote");
                   batchOperations.add(buildBatchOperation(jsonObject));
@@ -190,7 +192,7 @@ public class Utils {
        return todate;
    }
 
-   public static String getDate3MBack(){
+   public static String getDate6MBack(){
        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
        Calendar cal = Calendar.getInstance();
