@@ -97,11 +97,9 @@ public class LineCardThree extends CardController {
         super.update();
 
         mChart.dismissAllTooltips();
-        if(firstStage) {
-            mChart.updateValues(0, mValues);
-        }else{
-            mChart.updateValues(0, mValues);
-        }
+
+        mChart.updateValues(0, mValues);
+
         mChart.notifyDataUpdate();
     }
 

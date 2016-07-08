@@ -110,7 +110,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
     protected void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(QUOTE_LOADER, null, this);
-        getLoaderManager().restartLoader(GRAPH_LOADER, null, this);
+        //getLoaderManager().restartLoader(GRAPH_LOADER, null, this);
     }
 
     @Override

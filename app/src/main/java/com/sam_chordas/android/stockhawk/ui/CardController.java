@@ -49,12 +49,9 @@ public class CardController {
 				public void run() {
 					unlock();
 				}
-			}, 500);
+			}, 200);
 		}
 	};
-
-
-	protected boolean firstStage;
 
 
 	protected CardController(CardView card){
@@ -89,12 +86,10 @@ public class CardController {
 
 	protected void show(Runnable action){
 		lock();
-		firstStage = false;
 	}
 
 	protected void update(){
 		lock();
-		firstStage = !firstStage;
 	}
 
 	protected void dismiss(Runnable action){
