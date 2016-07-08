@@ -380,33 +380,34 @@
 
                 <!-- x-label start !-->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/xlabel1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:textSize="10sp"
-                        android:layout_marginLeft="0dp"/>
+                        android:gravity="left" />
 
                     <TextView
                         android:id="@+id/xlabel2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
                         android:textSize="10sp"
-                        android:layout_marginLeft="73dp"/>
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/xlabel3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:textSize="10sp"
-                        android:layout_marginLeft="73dp"/>
-
-
-
+                        android:gravity="end" />
                 </LinearLayout>
                 <!-- x-label end !-->
 
