@@ -1,13 +1,17 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
+import com.sam_chordas.android.stockhawk.data.Columns;
 import com.sam_chordas.android.stockhawk.data.GraphColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -184,14 +188,17 @@ public class Utils {
     return builder.build();
   }
 
-    public static String getYesterDate(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static String getLastTradeDate(Context context, String symbol){
+        Cursor cursor = context.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+                Columns.QUOTE_COLUMNS,
+                QuoteColumns.ISCURRENT + " = ?" + " AND " + QuoteColumns.SYMBOL + " = ? ",
+                new String[]{"1", symbol},null);
+        if(cursor.moveToFirst()){
+            return convertDateFormat(cursor.getString(cursor.getColumnIndex(QuoteColumns.DATE)));
+        }else{
+            return null;
+        }
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        Date todate1 = cal.getTime();
-        String fromdate = dateFormat.format(todate1);
-        return fromdate;
     }
 
    public static String getDate6MBack(){
@@ -203,5 +210,20 @@ public class Utils {
        String fromdate = dateFormat.format(todate1);
        return fromdate;
    }
+
+    public static String convertDateFormat(String date){
+        String convertDate = null;
+        SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+
+        try{
+            Date parsed = format1.parse(date);
+            convertDate = format2.format(parsed);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        return convertDate;
+    }
 
 }

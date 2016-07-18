@@ -153,9 +153,11 @@ public class StockTaskService extends GcmTaskService{
           // get symbol from params.getExtra and build query
           String stockInput = params.getExtras().getString("symbol");
 
+          //See if historical data is up to date by checking whether the last trade day is already in the table.
           initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Graph.CONTENT_URI,
                   Columns.GRAPH_COLUMNS, GraphColumns.SYMBOL + " = ? " + " AND " + GraphColumns.DATE + " = ?",
-                  new String[]{stockInput, Utils.getYesterDate()}, null);
+                  new String[]{stockInput, Utils.getLastTradeDate(mContext,stockInput)}, null);
+
 
           if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {
               //work around for simonVT cannot implemnt unique constrains on 2 keys.
@@ -172,7 +174,7 @@ public class StockTaskService extends GcmTaskService{
                           "\"" + Utils.getDate6MBack() + "\"" +
                           " and" +
                           " endDate = " +
-                          "\"" + Utils.getYesterDate() + "\"", "UTF-8"));
+                          "\"" + Utils.getLastTradeDate(mContext,stockInput) + "\"", "UTF-8"));
                   urlStringBuilderGraph.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
                           + "org%2Falltableswithkeys&callback=");
               } catch (UnsupportedEncodingException e) {
@@ -201,6 +203,7 @@ public class StockTaskService extends GcmTaskService{
                   }
               }
           } else if (initQueryCursor != null) {
+//              Log.d("QuoteLastTradeDay2",initQueryCursor.getString(initQueryCursor.getColumnIndex(QuoteColumns.DATE)));
               initQueryCursor.close();
               result = GcmNetworkManager.RESULT_SUCCESS;
           }

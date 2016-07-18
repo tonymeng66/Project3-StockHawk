@@ -145,7 +145,7 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
                 mOpen.setText(data.getString(data.getColumnIndex(QuoteColumns.OPEN)));
                 mDaysHigh.setText(data.getString(data.getColumnIndex(QuoteColumns.DAYSHIGH)));
                 mDaysLowValue.setText(data.getString(data.getColumnIndex(QuoteColumns.DAYSLOW)));
-                mLastTradeDate.setText(data.getString(data.getColumnIndex(QuoteColumns.DATE)));
+                mLastTradeDate.setText(Utils.convertDateFormat(data.getString(data.getColumnIndex(QuoteColumns.DATE))));
                 mAppbar.setTitle(data.getString(data.getColumnIndex(QuoteColumns.NAME)));
 
                 if (data.getInt(data.getColumnIndex("is_up")) == 1){
